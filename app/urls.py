@@ -10,4 +10,5 @@ urlpatterns = [
 
     path("api_user/", views.UserAPIView.as_view()),
     path("api_user/<str:id>/", views.UserAPIView.as_view()),
+    path("stu/", views.StudentAPIView.as_view()),
 ]

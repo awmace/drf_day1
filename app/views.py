@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer,BrowsableAPIRenderer
 
 from app.models import User
 
@@ -117,7 +118,12 @@ from rest_framework.request import Request
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
+# 开发基于drf的视图
 class UserAPIView(APIView):
+    # 单独为某个视图指定渲染器 局部使用
+    # 局部的要比全局的优先级高
+    # renderer_classes = (JSONRenderer,)
+    # renderer_classes = (BrowsableAPIRenderer,)
     def get(self,request,*args,**kwargs):
 
         # 可以通过_request 访问Django原生的request对象
@@ -130,7 +136,8 @@ class UserAPIView(APIView):
         # 获取路径传参
         user_id = kwargs.get("id")
         if user_id:
-            user = User.objects.filter(pk=user_id).values("username", "password", "gender").first()
+            # user = User.objects.filter(pk=user_id).values("username", "password", "gender").first()
+            user=User.objects.get(pk=user_id)
             if user:
                 # 如果查询出对应的用户信息，则返回给前端
                 return JsonResponse({
@@ -152,6 +159,7 @@ class UserAPIView(APIView):
             "status": 500,
             "message": "查询失败",
         })
+        return Response('111')
 
 
 
@@ -181,3 +189,12 @@ class UserAPIView(APIView):
 
 def home(request):
     return HttpResponse('111')
+
+class StudentAPIView(APIView):
+    # 局部使用解析器
+    # parser_classes = [JSONParser]
+    def post(self,request,*args,**kwargs):
+        print('POST方法')
+        # print(request.POST) 无法获取json格式
+        print(request.data) #获取到各种格式
+        return Response('POST方法返回成功')
