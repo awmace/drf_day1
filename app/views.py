@@ -178,3 +178,6 @@ class UserAPIView(APIView):
                 "status": 500,
                 "message": "创建用户失败",
             })
+
+def home(request):
+    return HttpResponse('111')
