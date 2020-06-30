@@ -134,9 +134,9 @@ REST_FRAMEWORK={
     ],
     # 配置全局的解析器
     'DEFAULT_PARSER_CLASSES': [
-        #'rest_framework.parsers.JSONParser', #json解析器
+        'rest_framework.parsers.JSONParser', #json解析器
         'rest_framework.parsers.FormParser',# 只支持www-url-encode
-        #'rest_framework.parsers.MultiPartParser' #只支持表单参数解析 formdata
+        'rest_framework.parsers.MultiPartParser' #只支持表单参数解析 formdata
     ],
     # 全局处理异常的方法
     # 'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
@@ -145,4 +145,6 @@ REST_FRAMEWORK={
 }
 
 # 静态资源的路径
-MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+MEDIA_URL = "/media/"

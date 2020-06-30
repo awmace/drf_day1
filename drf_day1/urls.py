@@ -22,6 +22,7 @@ from drf_day1 import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('app/', include('app.urls')),
+    path('api/', include('api.urls')),
     # 指定图片上传的目录
-    url(r"^media/(?P<path>).*",serve, {'document_root':settings.MEDIA_ROOT}),
+    url(r"^media/(?P<path>.*)", serve, {"document_root": settings.MEDIA_ROOT}),
 ]
