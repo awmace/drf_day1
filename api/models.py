@@ -21,3 +21,16 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.username
+
+class Student(models.Model):
+    name=models.CharField(max_length=20)
+    age=models.SmallIntegerField(default=18)
+    phone = models.CharField(max_length=11, null=True, blank=True)
+
+    class Meta:
+        db_table='npf_student'
+        verbose_name='学生'
+        verbose_name_plural=verbose_name
+
+    def __str__(self):
+        return self.name

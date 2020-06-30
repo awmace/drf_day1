@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 # 定义序列化器类 跟模型models对应
-from api.models import Employee
+from api.models import Employee, Student
 from drf_day1 import settings
 
 # 序列化器
@@ -70,3 +70,30 @@ class EmployeeDeSerializer(serializers.Serializer):
         # 方法中完成新增
         # print(validated_data)
         return Employee.objects.create(**validated_data)
+
+
+# 学生表的序列化器
+class StudentSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    age = serializers.IntegerField()
+    phone = serializers.CharField()
+
+# 学生表的反序列化器
+class StudentDeSerializer(serializers.Serializer):
+    name=serializers.CharField(
+        min_length=2,
+        max_length=5,
+        error_messages={
+            "max_length": "姓名太长了",
+            "min_length": "姓名太短了",
+        }
+    )
+    age=serializers.IntegerField()
+    phone=serializers.CharField()
+
+    # 重写create()方法
+    # 继承的serializer类没有对新增做具体的实现
+    def create(self, validated_data):
+        # 方法中完成新增
+        print(validated_data)
+        return Student.objects.create(**validated_data)
