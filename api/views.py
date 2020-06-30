@@ -51,7 +51,7 @@ class EmployeeAPIView(APIView):
         # 在反序列化时需要指定关键字参数  data
         serializer = EmployeeDeSerializer(data=user_data)
         # print(serializer)
-        print(serializer.is_valid())
+        # print(serializer.is_valid())
         # # 对序列化的数据进行校验  通过is_valid() 方法对传递过来的参数进行校验  校验合法返回True
         if serializer.is_valid():
             # 调用save()去保存对象  必须重写create()方法

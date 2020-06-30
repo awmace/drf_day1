@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from rest_framework import exceptions
 # 定义序列化器类 跟模型models对应
 from api.models import Employee, Student
 from drf_day1 import settings
@@ -64,9 +64,35 @@ class EmployeeDeSerializer(serializers.Serializer):
     password = serializers.CharField(required=False)
     phone = serializers.CharField()
 
+    # 在create方法保存之前，DRF提供了两个钩子函数进行校验
+
+    # 自定义字段 重复密码
+    re_pwd=serializers.CharField()
+
+    # 局部校验钩子,对反序列化种某个字段进行校验 v..._字段名,先于create
+    def validate_username(self,value):
+        # print(self) #当前实例的反序列化器，value是username的值
+        # 自定义用户名校验
+        if '1' in value:
+            raise exceptions.ValidationError('用户名有误')
+        return value
+    # 全局校验钩子,先于create执行
+    def validate(self, attrs):
+        # 可以对前端发送的所有数据进行自定义校验
+        # print(self,'当前实例所使用的反序列化器') attrs是前端过来的数据
+
+        pwd=attrs.get('password')
+        # 从attrs弹出无效参数re_pwd,因为它是不入库的
+        re_pwd=attrs.pop('re_pwd')
+        # 自定义规则，两次密码不一致无法保存
+        if pwd != re_pwd:
+            raise exceptions.ValidationError('两次密码不一致')
+        return attrs
+
     # 想要完成新增员工  必须重写create()方法
     # 继承的serializer类并没有新增做具体的实现
     def create(self, validated_data):
+        # print("222")
         # 方法中完成新增
         # print(validated_data)
         return Employee.objects.create(**validated_data)
